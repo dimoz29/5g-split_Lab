@@ -1,26 +1,3 @@
-Ναι, το script που σου έδωσα **όντως υποθέτει** ότι το Dockerfile είναι στο:
-
-```text
-$HOME/lab/5g-Lab-gnb-split/Dockerfile.oai-gnb-flexric
-```
-
-δηλαδή:
-
-```bash
-LAB_ROOT="$HOME/lab"
-LAB_DIR="${LAB_ROOT}/5g-Lab-gnb-split"
-DOCKERFILE="${LAB_DIR}/Dockerfile.oai-gnb-flexric"
-```
-
-Αν ο φάκελος στο repo σου λέγεται **ακριβώς** `5g-Lab-gnb-split` (όπως στο tree που είχαμε δει), είσαι ΟΚ.
-Αν τον έχεις με άλλο όνομα (π.χ. `oai5g-gnb-split`), απλά άλλαξε το `LAB_DIR` στο script.
-
----
-
-## Προτεινόμενο `README.md` (στα αγγλικά, έτοιμο για το repo)
-
-Μπορείς να κάνεις copy–paste ό,τι είναι από κάτω κατευθείαν σε `README.md` στο `5g-split_Lab` repo σου.
-
 ````markdown
 # OAI 5G Split Lab with FlexRIC (Minikube on WSL2)
 
