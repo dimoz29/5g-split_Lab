@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  prometheus.yaml.gz: H4sIAAAAAAAA/6ySvY7bMBCEez3FFimSAIqMpGMXICnz0wcBsaLGMnEUSSxXsvP2AWXdWbkYV11n7o4/zQw5htRzMA1RccIZ1keFLBwMfTqUhggXhUQONnCPUKqSKEuaoCfMxdCUotckPo7dw9yjve3a23k3fQawghy8Y0Nv3v788cV+//zt67v63YXDzOpTfGZJ5gB79AHFNC11UNfdaF3dlu6uhxc8tfVvK7M9dO8//OEpNFsfLsWjH4uhX7+bokl4RO1Ay9Bfu0iz2nS0SQaIVT/Bnn0c0tnQoTQcIOrjWKXrbytYi3ziNkQtsatBDa2rQVJeyYIRF3Onq0fYxJFHyAbJrCebBUd/MdSthOJOmGDopHpF1vQSoSi2DHsPFSApwBDikJOPer0oosgTSmaHTfc0ux3b3SNYh5y9XSBlDbV83NL8F3wf/QHIG7CkWRz+eXBVae0EZbuPAFm8g612NtnW2Qu3vm/uFTw81mVzEr3jpFbfntE3fwMAAP//1rJfsmoDAAA=
+kind: Secret
+metadata:
+  creationTimestamp: "2025-11-14T11:07:36Z"
+  labels:
+    app.kubernetes.io/managed-by: prometheus-operator
+    managed-by: prometheus-operator
+  name: prometheus-kube-prometheus-kube-prome-prometheus
+  namespace: monitoring
+  ownerReferences:
+  - apiVersion: monitoring.coreos.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Prometheus
+    name: kube-prometheus-kube-prome-prometheus
+    uid: 18ce29fa-15c6-4f38-9878-9522893caf85
+  resourceVersion: "15893"
+  uid: ef05f930-a531-4528-b0f2-f2a82d4eb400
+type: Opaque

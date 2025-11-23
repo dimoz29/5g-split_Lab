@@ -1,0 +1,14 @@
+NAME        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                    AGE     SELECTOR
+mysql       ClusterIP   10.103.0.231     <none>        3306/TCP                   28h     app.kubernetes.io/name=oai-5g-core-split-mysql
+oai-amf     ClusterIP   10.109.176.60    <none>        80/TCP,38412/SCTP          28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-amf
+oai-ausf    ClusterIP   10.99.247.243    <none>        80/TCP                     28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-ausf
+oai-cu      ClusterIP   10.101.42.175    <none>        38472/SCTP,2153/UDP        3h43m   app=oai-cu-cp
+oai-cu-cp   ClusterIP   10.106.229.88    <none>        38462/SCTP                 3h30m   app=oai-cu-cp
+oai-cu-up   ClusterIP   10.106.111.7     <none>        38462/SCTP                 3h39m   app=oai-cu-up
+oai-lmf     ClusterIP   10.97.124.200    <none>        80/TCP                     28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-lmf
+oai-nrf     ClusterIP   10.97.149.152    <none>        80/TCP                     28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-nrf
+oai-ran     ClusterIP   None             <none>        38472/SCTP,2153/UDP        4h37m   app.kubernetes.io/instance=oai-du-split,app.kubernetes.io/name=oai-du
+oai-smf     ClusterIP   10.104.172.9     <none>        8805/UDP,80/TCP            28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-smf
+oai-udm     ClusterIP   10.109.164.218   <none>        80/TCP                     28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-udm
+oai-udr     ClusterIP   10.105.38.178    <none>        80/TCP                     28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-udr
+oai-upf     ClusterIP   10.97.165.90     <none>        8805/UDP,2152/UDP,80/TCP   28h     app.kubernetes.io/instance=oai-5g-core-split,app.kubernetes.io/name=oai-upf

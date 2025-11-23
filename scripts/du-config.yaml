@@ -1,0 +1,112 @@
+apiVersion: v1
+data:
+  du.conf: "Active_gNBs = ( \"oai-du-rfsim\");\n# Asn1_verbosity, choice in: none,
+    info, annoying\nAsn1_verbosity = \"none\";\n\ngNBs =\n(\n {\n    ////////// Identification
+    parameters:\n    gNB_ID = 0xe00;\n    gNB_DU_ID = 0xe00;\n\n#     cell_type =
+    \ \"CELL_MACRO_GNB\";\n\n    gNB_name  =  \"oai-du-rfsim\";\n\n    // Tracking
+    area code, 0x0000 and 0xfffe are reserved values\n    tracking_area_code  = 1
+    ;\n    plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst
+    = 1 }) });\n\n    nr_cellid = 12345678L;\n\n    ////////// Physical parameters:\n\n
+    \   min_rxtxtime                                              = 6;\n    force_256qam_off
+    = 1;\n\n    servingCellConfigCommon = (\n    {\n #spCellConfigCommon\n\n      physCellId
+    \                                                   = 0;\n\n#  downlinkConfigCommon\n
+    \   #frequencyInfoDL\n      # this is 3600 MHz + 43 PRBs@30kHz SCS (same as initial
+    BWP)\n      absoluteFrequencySSB                                          = 641280;\n
+    \     dl_frequencyBand                                                 = 78;\n
+    \     # this is 3600 MHz\n      dl_absoluteFrequencyPointA                                       =
+    640008;\n      #scs-SpecificCarrierList\n        dl_offstToCarrier                                              =
+    0;\n# subcarrierSpacing\n# 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120  \n        dl_subcarrierSpacing
+    \                                          = 1;\n        dl_carrierBandwidth                                            =
+    106;\n     #initialDownlinkBWP\n      #genericParameters\n        # this is RBstart=27,L=48
+    (275*(L-1))+RBstart\n        initialDLBWPlocationAndBandwidth                               =
+    28875; # 6366 12925 12956 28875 12952\n# subcarrierSpacing\n# 0=kHz15, 1=kHz30,
+    2=kHz60, 3=kHz120  \n        initialDLBWPsubcarrierSpacing                                           =
+    1;\n      #pdcch-ConfigCommon\n        initialDLBWPcontrolResourceSetZero                              =
+    12;\n        initialDLBWPsearchSpaceZero                                             =
+    0;\n\n  #uplinkConfigCommon \n     #frequencyInfoUL\n      ul_frequencyBand                                                 =
+    78;\n      #scs-SpecificCarrierList\n      ul_offstToCarrier                                              =
+    0;\n# subcarrierSpacing\n# 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120  \n      ul_subcarrierSpacing
+    \                                          = 1;\n      ul_carrierBandwidth                                            =
+    106;\n      pMax                                                          = 20;\n
+    \    #initialUplinkBWP\n      #genericParameters\n        initialULBWPlocationAndBandwidth
+    \                           = 28875;\n# subcarrierSpacing\n# 0=kHz15, 1=kHz30,
+    2=kHz60, 3=kHz120  \n        initialULBWPsubcarrierSpacing                                           =
+    1;\n      #rach-ConfigCommon\n        #rach-ConfigGeneric\n          prach_ConfigurationIndex
+    \                                 = 98;\n#prach_msg1_FDM\n#0 = one, 1=two, 2=four,
+    3=eight\n          prach_msg1_FDM                                            =
+    0;\n          prach_msg1_FrequencyStart                                 = 0;\n
+    \         zeroCorrelationZoneConfig                                 = 13;\n          preambleReceivedTargetPower
+    \                              = -96;\n#preamblTransMax (0...10) = (3,4,5,6,7,8,10,20,50,100,200)\n
+    \         preambleTransMax                                          = 6;\n#powerRampingStep\n#
+    0=dB0,1=dB2,2=dB4,3=dB6\n        powerRampingStep                                            =
+    1;\n#ra_ReponseWindow\n#1,2,4,8,10,20,40,80\n        ra_ResponseWindow                                           =
+    4;\n#ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR\n#1=oneeighth,2=onefourth,3=half,4=one,5=two,6=four,7=eight,8=sixteen\n
+    \       ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR                = 4;\n#oneHalf
+    (0..15) 4,8,12,16,...60,64\n        ssb_perRACH_OccasionAndCB_PreamblesPerSSB
+    \                  = 14;\n#ra_ContentionResolutionTimer\n#(0..7) 8,16,24,32,40,48,56,64\n
+    \       ra_ContentionResolutionTimer                                = 7;\n        rsrp_ThresholdSSB
+    \                                          = 19;\n#prach-RootSequenceIndex_PR\n#1
+    = 839, 2 = 139\n        prach_RootSequenceIndex_PR                                  =
+    2;\n        prach_RootSequenceIndex                                     = 1;\n
+    \       # SCS for msg1, can only be 15 for 30 kHz < 6 GHz, takes precendence over
+    the one derived from prach-ConfigIndex\n        #  \n        msg1_SubcarrierSpacing
+    \                                     = 1,\n# restrictedSetConfig\n# 0=unrestricted,
+    1=restricted type A, 2=restricted type B\n        restrictedSetConfig                                         =
+    0,\n\n        msg3_DeltaPreamble                                          = 1;\n
+    \       p0_NominalWithGrant                                         =-90;\n\n#
+    pucch-ConfigCommon setup :\n# pucchGroupHopping\n# 0 = neither, 1= group hopping,
+    2=sequence hopping\n        pucchGroupHopping                                           =
+    0;\n        hoppingId                                                   = 40;\n
+    \       p0_nominal                                                  = -90;\n#
+    ssb_PositionsInBurs_BitmapPR\n# 1=short, 2=medium, 3=long\n      ssb_PositionsInBurst_PR
+    \                                      = 2;\n      ssb_PositionsInBurst_Bitmap
+    \                                  = 1;\n\n# ssb_periodicityServingCell\n# 0 =
+    ms5, 1=ms10, 2=ms20, 3=ms40, 4=ms80, 5=ms160, 6=spare2, 7=spare1 \n      ssb_periodicityServingCell
+    \                                   = 2;\n\n# dmrs_TypeA_position\n# 0 = pos2,
+    1 = pos3\n      dmrs_TypeA_Position                                           =
+    0;\n\n# subcarrierSpacing\n# 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120  \n      subcarrierSpacing
+    \                                            = 1;\n\n\n  #tdd-UL-DL-ConfigurationCommon\n#
+    subcarrierSpacing\n# 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120  \n      referenceSubcarrierSpacing
+    \                                   = 1;\n      # pattern1 \n      # dl_UL_TransmissionPeriodicity\n
+    \     # 0=ms0p5, 1=ms0p625, 2=ms1, 3=ms1p25, 4=ms2, 5=ms2p5, 6=ms5, 7=ms10\n      dl_UL_TransmissionPeriodicity
+    \                                = 6;\n      nrofDownlinkSlots                                             =
+    7;\n      nrofDownlinkSymbols                                           = 6;\n
+    \     nrofUplinkSlots                                               = 2;\n      nrofUplinkSymbols
+    \                                            = 4;\n\n      ssPBCH_BlockPower                                             =
+    -25;\n     }\n\n  );\n\n\n    # ------- SCTP definitions\n    SCTP :\n    {\n
+    \       # Number of streams to use in input/output\n        SCTP_INSTREAMS  =
+    2;\n        SCTP_OUTSTREAMS = 2;\n    };\n  }\n);\n\nMACRLCs = (\n  {\n    num_cc
+    \          = 1;\n    tr_s_preference  = \"local_L1\";\n    tr_n_preference  =
+    \"f1\";\n    local_n_if_name = \"eth0\";\n    local_n_address = \"@F1_DU_IP_ADDRESS@\";\n
+    \   remote_n_address = \"@CU_IP_ADDRESS@\";\n    local_n_portc   = 500;\n    local_n_portd
+    \  = 2153;\n    remote_n_portc  = 501;\n    remote_n_portd  = 2153;\n    pusch_TargetSNRx10
+    \         = 200;\n    pucch_TargetSNRx10          = 200;\n  }\n);\n\nL1s = (\n{\n
+    \ num_cc = 1;\n  tr_n_preference = \"local_mac\";\n  prach_dtx_threshold = 200;\n
+    \ pucch0_dtx_threshold = 150;\n  ofdm_offset_divisor = 8; #set this to UINT_MAX
+    for offset 0\n}\n);\n\nRUs = (\n    {     \n       local_rf       = \"yes\"\n
+    \        nb_tx          = 1\n         nb_rx          = 1\n         att_tx         =
+    0\n         att_rx         = 0;\n         bands          = [78];\n         max_pdschReferenceSignalPower
+    = -27;\n         max_rxgain                    = 114;\n         eNB_instances
+    \ = [0];\n         #beamforming 1x4 matrix:\n         bf_weights = [0x00007fff,
+    0x0000, 0x0000, 0x0000];\n         clock_src = \"internal\";\n    }\n);  \n\nTHREAD_STRUCT
+    = (\n  {\n    #three config for level of parallelism \"PARALLEL_SINGLE_THREAD\",
+    \"PARALLEL_RU_L1_SPLIT\", or \"PARALLEL_RU_L1_TRX_SPLIT\"\n    parallel_config
+    \   = \"PARALLEL_SINGLE_THREAD\";\n    #two option for worker \"WORKER_DISABLE\"
+    or \"WORKER_ENABLE\"\n    worker_config      = \"WORKER_ENABLE\";\n  }\n);\nrfsimulator:
+    {\nserveraddr = \"server\";\n    serverport = 4043;\n    options = (); #(\"saviq\");
+    or/and \"chanmod\"\n    modelname = \"AWGN\";\n    IQfile = \"/tmp/rfsimulator.iqs\"\n}\n\nlog_config:
+    {\n  global_log_level = \"info\";\n  hw_log_level = \"info\";\n  phy_log_level
+    = \"info\";\n  mac_log_level = \"info\";\n  rlc_log_level = \"info\";\n  f1ap_log_level
+    = \"info\";\n};\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: oai-du-split
+    meta.helm.sh/release-namespace: oai5g-split
+  creationTimestamp: "2025-11-20T12:44:40Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: oai-du-configmap
+  namespace: oai5g-split
+  resourceVersion: "28718"
+  uid: 50cfb80a-a551-4ddd-b29d-883ea5bf5b80

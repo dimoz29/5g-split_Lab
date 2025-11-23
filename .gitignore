@@ -1,0 +1,22 @@
+# Docker images / tarballs
+*.tar
+images/
+
+# Cluster runtime / state
+minikube/
+logs/
+diagnoselogs/
+*.log
+
+# Άλλα labs / training (αν τα φέρεις κατά λάθος)
+5g-lab/
+cka/
+k8s/
+~lab/
+
+# Editor / temp files
+.vscode/
+.idea/
+*~
+*.swp
+*.tmp

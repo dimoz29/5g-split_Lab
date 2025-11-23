@@ -1,0 +1,98 @@
+apiVersion: v1
+data:
+  cucp.conf: |
+    Active_gNBs = ( "oai-cu-cp");
+    # Asn1_verbosity, choice in: none, info, annoying
+    Asn1_verbosity = "none";
+    Num_Threads_PUSCH = 8;
+    sa = 1;
+
+    gNBs =
+    (
+     {
+        ////////// Identification parameters:
+        gNB_ID = 0xe00;
+
+        gNB_name  = "oai-cu-cp";
+
+        // Tracking area code, 0x0000 and 0xfffe are reserved values
+        tracking_area_code  = 1;
+        plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });
+
+        nr_cellid = 12345678L;
+
+        tr_s_preference = "f1";
+
+        // F1-C (CU-CP side)
+        local_s_if_name = "eth0";
+        local_s_address = "oai-cu-cp";
+        remote_s_address = "oai-cu";
+        local_s_portc   = 501;
+        local_s_portd   = 2153;
+        remote_s_portc  = 500;
+        remote_s_portd  = 2153;
+
+        # ------- SCTP definitions
+        SCTP :
+        {
+            # Number of streams to use in input/output
+            SCTP_INSTREAMS  = 2;
+            SCTP_OUTSTREAMS = 2;
+        };
+
+        ////////// AMF parameters:
+        amf_ip_address      = ( { ipv4 = "oai-amf";});
+
+        // E1 interface CU-CP <-> CU-UP
+        E1_INTERFACE =
+        (
+          {
+            type = "cp";
+            ipv4_cucp = "oai-cu-cp";
+            port_cucp = 38462;
+            ipv4_cuup = "oai-cu-up";
+            port_cuup = 38462;
+          }
+        );
+
+        NETWORK_INTERFACES :
+        {
+          # From the CU-CP point of view, this is the IP where AMF reaches NGAP
+          GNB_IPV4_ADDRESS_FOR_NG_AMF = "oai-cu-cp";
+        };
+      }
+    );
+
+    security = {
+      ciphering_algorithms = ( "nea0" );
+      integrity_algorithms = ( "nia2", "nia0" );
+      drb_ciphering = "yes";
+      drb_integrity = "no";
+    };
+
+    log_config :
+    {
+      global_log_level   = "info";
+      hw_log_level       = "info";
+      phy_log_level      = "info";
+      mac_log_level      = "info";
+      rlc_log_level      = "debug";
+      pdcp_log_level     = "info";
+      rrc_log_level      = "info";
+      f1ap_log_level     = "info";
+      ngap_log_level     = "debug";
+    };
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"cucp.conf":"Active_gNBs = ( \"oai-cu-cp\");\n# Asn1_verbosity, choice in: none, info, annoying\nAsn1_verbosity = \"none\";\nNum_Threads_PUSCH = 8;\nsa = 1;\n\ngNBs =\n(\n {\n    ////////// Identification parameters:\n    gNB_ID = 0xe00;\n\n    gNB_name  = \"oai-cu-cp\";\n\n    // Tracking area code, 0x0000 and 0xfffe are reserved values\n    tracking_area_code  = 1;\n    plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });\n\n    nr_cellid = 12345678L;\n\n    tr_s_preference = \"f1\";\n\n    // F1-C (CU-CP side)\n    local_s_if_name = \"eth0\";\n    local_s_address = \"oai-cu-cp\";\n    remote_s_address = \"oai-cu\";\n    local_s_portc   = 501;\n    local_s_portd   = 2153;\n    remote_s_portc  = 500;\n    remote_s_portd  = 2153;\n\n    # ------- SCTP definitions\n    SCTP :\n    {\n        # Number of streams to use in input/output\n        SCTP_INSTREAMS  = 2;\n        SCTP_OUTSTREAMS = 2;\n    };\n\n    ////////// AMF parameters:\n    amf_ip_address      = ( { ipv4 = \"oai-amf\";});\n\n    // E1 interface CU-CP \u003c-\u003e CU-UP\n    E1_INTERFACE =\n    (\n      {\n        type = \"cp\";\n        ipv4_cucp = \"oai-cu-cp\";\n        port_cucp = 38462;\n        ipv4_cuup = \"oai-cu-up\";\n        port_cuup = 38462;\n      }\n    );\n\n    NETWORK_INTERFACES :\n    {\n      # From the CU-CP point of view, this is the IP where AMF reaches NGAP\n      GNB_IPV4_ADDRESS_FOR_NG_AMF = \"oai-cu-cp\";\n    };\n  }\n);\n\nsecurity = {\n  ciphering_algorithms = ( \"nea0\" );\n  integrity_algorithms = ( \"nia2\", \"nia0\" );\n  drb_ciphering = \"yes\";\n  drb_integrity = \"no\";\n};\n\nlog_config :\n{\n  global_log_level   = \"info\";\n  hw_log_level       = \"info\";\n  phy_log_level      = \"info\";\n  mac_log_level      = \"info\";\n  rlc_log_level      = \"debug\";\n  pdcp_log_level     = \"info\";\n  rrc_log_level      = \"info\";\n  f1ap_log_level     = \"info\";\n  ngap_log_level     = \"debug\";\n};\n"},"kind":"ConfigMap","metadata":{"annotations":{"meta.helm.sh/release-name":"oai-cu-cp-split","meta.helm.sh/release-namespace":"oai5g-split"},"creationTimestamp":"2025-11-20T12:44:39Z","labels":{"app.kubernetes.io/managed-by":"Helm"},"name":"oai-cu-cp-configmap","namespace":"oai5g-split","resourceVersion":"53568","uid":"665ef833-2cda-4ec5-a59a-f12826984cbd"}}
+    meta.helm.sh/release-name: oai-cu-cp-split
+    meta.helm.sh/release-namespace: oai5g-split
+  creationTimestamp: "2025-11-20T12:44:39Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: oai-cu-cp-configmap
+  namespace: oai5g-split
+  resourceVersion: "58841"
+  uid: 665ef833-2cda-4ec5-a59a-f12826984cbd

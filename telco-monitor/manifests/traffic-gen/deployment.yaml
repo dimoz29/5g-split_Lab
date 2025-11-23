@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-gen
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: traffic-gen
+  template:
+    metadata:
+      labels:
+        app: traffic-gen
+    spec:
+      containers:
+      - name: generator
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+          - >
+            while true;
+            do wget -qO- http://telco-metrics:8080/metrics >/dev/null;
+            sleep 1;
+            done;

@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oai-flexric-config
+  namespace: oai5g-split
+data:
+  flexric.conf: |
+    [NEAR-RIC]
+    NEAR_RIC_IP = 0.0.0.0
+    E2_Port = 36421
+    E42_Port = 36422
+    SM_DIR = /usr/local/lib/flexric/
+    E2AP_VERSION = "2.03"
+    KPM_VERSION  = "2.03"
+    LOG_LEVEL = "info"
+    NB_WORKERS = 2
+
+    [XAPP]
+    DB_PATH = /tmp/
+    DB_NAME = xapp_db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oai-flexric
+  namespace: oai5g-split
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oai-flexric
+  template:
+    metadata:
+      labels:
+        app: oai-flexric
+    spec:
+      containers:
+        - name: oai-flexric
+          image: oaisoftwarealliance/oai-flexric:develop
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/local/bin/nearRT-RIC"]
+          args: ["-c", "/usr/local/etc/flexric/flexric.conf", "-p", "/usr/local/lib/flexric/"]
+          ports:
+            - containerPort: 36421
+              name: e2
+              protocol: TCP
+            - containerPort: 36422
+              name: iapp
+              protocol: TCP
+          volumeMounts:
+            - name: flexric-config
+              mountPath: /usr/local/etc/flexric/flexric.conf
+              subPath: flexric.conf
+      volumes:
+        - name: flexric-config
+          configMap:
+            name: oai-flexric-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-flexric
+  namespace: oai5g-split
+spec:
+  selector:
+    app: oai-flexric
+  ports:
+    - name: e2
+      port: 36421
+      targetPort: 36421
+      protocol: TCP
+    - name: iapp
+      port: 36422
+      targetPort: 36422
+      protocol: TCP
+  type: ClusterIP
+

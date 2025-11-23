@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telco-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telco-metrics
+  template:
+    metadata:
+      labels:
+        app: telco-metrics
+    spec:
+      containers:
+      - name: metrics
+        image: quay.io/brancz/prometheus-example-app:v0.3.0
+        ports:
+        - containerPort: 8080
+

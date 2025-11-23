@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oai-cu-up-configmap
+  namespace: oai5g-split
+data:
+  cuup.conf: |
+    Active_gNBs = ( "oai-cuup");
+    # Asn1_verbosity, choice in: none, info, annoying
+    Asn1_verbosity = "none";
+    sa = 1;
+
+    gNBs =
+    (
+     {
+        ////////// Identification parameters:
+        gNB_ID = 0xe00;
+        gNB_CU_UP_ID = 0xe00;
+
+    #     cell_type =  "CELL_MACRO_GNB";
+
+        gNB_name  =  "oai-cuup";
+
+        // Tracking area code, 0x0000 and 0xfffe are reserved values
+        tracking_area_code  = 1;
+        plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });
+
+        tr_s_preference = "f1";
+
+        // F1-U πλευρά (CU-UP)
+        local_s_if_name = "eth0";
+        # Local = CU-UP service
+        local_s_address = "oai-cu-up";
+        # Remote = DU / RFSIM aggregator
+        remote_s_address = "oai-ran";
+        local_s_portc   = 501;
+        local_s_portd   = 2153;
+        remote_s_portc  = 500;
+        remote_s_portd  = 2153;
+
+        # ------- SCTP definitions
+        SCTP :
+        {
+            # Number of streams to use in input/output
+            SCTP_INSTREAMS  = 2;
+            SCTP_OUTSTREAMS = 2;
+        };
+
+        # E1 interface CU-CP <-> CU-UP
+        E1_INTERFACE =
+        (
+          {
+            type = "up";
+            # CU-CP πίσω από το service oai-cu
+            ipv4_cucp = "oai-cu";
+            # CU-UP πίσω από το service oai-cu-up
+            ipv4_cuup = "oai-cu-up";
+          }
+        )
+
+        NETWORK_INTERFACES :
+        {
+          # Το “local” IP/host του CU-UP για NG/NGU (εδώ δίνουμε το ίδιο service)
+          GNB_IPV4_ADDRESS_FOR_NG_AMF              = "oai-cu-up";
+          GNB_IPV4_ADDRESS_FOR_NGU                 = "oai-cu-up";
+          GNB_PORT_FOR_S1U                         = 2152; # Spec 2152
+        };
+      }
+    );
+
+    log_config : {
+      global_log_level = "info";
+      pdcp_log_level   = "info";
+      f1ap_log_level   = "info";
+      ngap_log_level   = "info";
+    };

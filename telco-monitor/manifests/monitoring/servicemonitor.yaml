@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: telco-metrics-sm
+  namespace: monitoring
+  labels:
+    release: kube-prometheus
+    app.kubernetes.io/instance: kube-prometheus   # <-- REQUIRED LABEL
+spec:
+  selector:
+    matchLabels:
+      app: telco-metrics
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - interval: 5s
+    path: /metrics
+    port: http

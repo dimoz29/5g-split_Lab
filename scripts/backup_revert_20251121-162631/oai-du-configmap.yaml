@@ -1,0 +1,181 @@
+apiVersion: v1
+data:
+  du.conf: |
+    Active_gNBs = ( "oai-du-rfsim");
+    Asn1_verbosity = "none";
+
+    gNBs =
+    (
+     {
+        gNB_ID    = 0xe00;
+        gNB_DU_ID = 0xe00;
+
+        gNB_name  = "oai-du-rfsim";
+
+        tracking_area_code  = 1;
+        plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });
+
+        nr_cellid = 12345678L;
+
+        min_rxtxtime       = 6;
+        force_256qam_off   = 1;
+
+        servingCellConfigCommon = (
+        {
+          physCellId = 0;
+          absoluteFrequencySSB  = 641280;
+          dl_frequencyBand      = 78;
+          dl_absoluteFrequencyPointA = 640008;
+          dl_offstToCarrier     = 0;
+          dl_subcarrierSpacing  = 1;
+          dl_carrierBandwidth   = 106;
+
+          initialDLBWPlocationAndBandwidth  = 28875;
+          initialDLBWPsubcarrierSpacing     = 1;
+          initialDLBWPcontrolResourceSetZero = 12;
+          initialDLBWPsearchSpaceZero        = 0;
+
+          ul_frequencyBand      = 78;
+          ul_offstToCarrier     = 0;
+          ul_subcarrierSpacing  = 1;
+          ul_carrierBandwidth   = 106;
+          pMax                  = 20;
+
+          initialULBWPlocationAndBandwidth  = 28875;
+          initialULBWPsubcarrierSpacing     = 1;
+
+          # RACH/PUSCH/PUCCH configs παραμένουν όπως ήταν (δεν πειράζω τα RF)
+          prach_ConfigurationIndex = 98;
+          prach_msg1_FDM           = 0;
+          prach_msg1_FrequencyStart = 0;
+          zeroCorrelationZoneConfig = 13;
+          preambleReceivedTargetPower = -96;
+          preambleTransMax           = 6;
+          powerRampingStep           = 1;
+          ra_ResponseWindow          = 4;
+          ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR = 4;
+          ssb_perRACH_OccasionAndCB_PreamblesPerSSB    = 14;
+          ra_ContentionResolutionTimer                 = 7;
+          rsrp_ThresholdSSB = 19;
+          prach_RootSequenceIndex_PR = 2;
+          prach_RootSequenceIndex    = 1;
+          msg1_SubcarrierSpacing     = 1,
+          restrictedSetConfig        = 0,
+          msg3_DeltaPreamble         = 1;
+          p0_NominalWithGrant        = -90;
+
+          pucchGroupHopping = 0;
+          hoppingId         = 40;
+          p0_nominal        = -90;
+
+          ssb_PositionsInBurst_PR    = 2;
+          ssb_PositionsInBurst_Bitmap = 1;
+
+          ssb_periodicityServingCell = 2;
+
+          dmrs_TypeA_Position = 0;
+          subcarrierSpacing   = 1;
+
+          referenceSubcarrierSpacing         = 1;
+          dl_UL_TransmissionPeriodicity      = 6;
+          nrofDownlinkSlots                  = 7;
+          nrofDownlinkSymbols                = 6;
+          nrofUplinkSlots                    = 2;
+          nrofUplinkSymbols                  = 4;
+
+          ssPBCH_BlockPower = -25;
+        });
+
+        SCTP :
+        {
+          SCTP_INSTREAMS  = 2;
+          SCTP_OUTSTREAMS = 2;
+        };
+      }
+    );
+
+    MACRLCs = (
+      {
+        num_cc          = 1;
+        tr_s_preference = "local_L1";
+        tr_n_preference = "f1";
+
+        // F1 (DU side) – headless services
+        local_n_if_name  = "eth0";
+        local_n_address  = "oai-ran";  // DU πλευρά
+        remote_n_address = "oai-ran";   // CU πλευρά
+        local_n_portc    = 500;
+        local_n_portd    = 2153;
+        remote_n_portc   = 501;
+        remote_n_portd   = 2153;
+
+        pusch_TargetSNRx10 = 200;
+        pucch_TargetSNRx10 = 200;
+      }
+    );
+
+    L1s = (
+    {
+      num_cc = 1;
+      tr_n_preference = "local_mac";
+      prach_dtx_threshold   = 200;
+      pucch0_dtx_threshold  = 150;
+      ofdm_offset_divisor   = 8;
+    }
+    );
+
+    RUs = (
+      {
+        local_rf       = "yes";
+        nb_tx          = 1;
+        nb_rx          = 1;
+        att_tx         = 0;
+        att_rx         = 0;
+        bands          = [78];
+        max_pdschReferenceSignalPower = -27;
+        max_rxgain                    = 114;
+        eNB_instances                 = [0];
+        bf_weights = [0x00007fff, 0x0000, 0x0000, 0x0000];
+        clock_src = "internal";
+      }
+    );
+
+    THREAD_STRUCT = (
+      {
+        parallel_config = "PARALLEL_SINGLE_THREAD";
+        worker_config   = "WORKER_ENABLE";
+      }
+    );
+
+    rfsimulator:
+    {
+      serveraddr = "server";
+      serverport = 4043;
+      options    = ();
+      modelname  = "AWGN";
+      IQfile     = "/tmp/rfsimulator.iqs";
+    }
+
+    log_config:
+    {
+      global_log_level = "info";
+      hw_log_level     = "info";
+      phy_log_level    = "info";
+      mac_log_level    = "info";
+      rlc_log_level    = "info";
+      f1ap_log_level   = "info";
+    };
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"du.conf":"Active_gNBs = ( \"oai-du-rfsim\");\nAsn1_verbosity = \"none\";\n\ngNBs =\n(\n {\n    gNB_ID    = 0xe00;\n    gNB_DU_ID = 0xe00;\n\n    gNB_name  = \"oai-du-rfsim\";\n\n    tracking_area_code  = 1;\n    plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });\n\n    nr_cellid = 12345678L;\n\n    min_rxtxtime       = 6;\n    force_256qam_off   = 1;\n\n    servingCellConfigCommon = (\n    {\n      physCellId = 0;\n      absoluteFrequencySSB  = 641280;\n      dl_frequencyBand      = 78;\n      dl_absoluteFrequencyPointA = 640008;\n      dl_offstToCarrier     = 0;\n      dl_subcarrierSpacing  = 1;\n      dl_carrierBandwidth   = 106;\n\n      initialDLBWPlocationAndBandwidth  = 28875;\n      initialDLBWPsubcarrierSpacing     = 1;\n      initialDLBWPcontrolResourceSetZero = 12;\n      initialDLBWPsearchSpaceZero        = 0;\n\n      ul_frequencyBand      = 78;\n      ul_offstToCarrier     = 0;\n      ul_subcarrierSpacing  = 1;\n      ul_carrierBandwidth   = 106;\n      pMax                  = 20;\n\n      initialULBWPlocationAndBandwidth  = 28875;\n      initialULBWPsubcarrierSpacing     = 1;\n\n      # RACH/PUSCH/PUCCH configs παραμένουν όπως ήταν (δεν πειράζω τα RF)\n      prach_ConfigurationIndex = 98;\n      prach_msg1_FDM           = 0;\n      prach_msg1_FrequencyStart = 0;\n      zeroCorrelationZoneConfig = 13;\n      preambleReceivedTargetPower = -96;\n      preambleTransMax           = 6;\n      powerRampingStep           = 1;\n      ra_ResponseWindow          = 4;\n      ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR = 4;\n      ssb_perRACH_OccasionAndCB_PreamblesPerSSB    = 14;\n      ra_ContentionResolutionTimer                 = 7;\n      rsrp_ThresholdSSB = 19;\n      prach_RootSequenceIndex_PR = 2;\n      prach_RootSequenceIndex    = 1;\n      msg1_SubcarrierSpacing     = 1,\n      restrictedSetConfig        = 0,\n      msg3_DeltaPreamble         = 1;\n      p0_NominalWithGrant        = -90;\n\n      pucchGroupHopping = 0;\n      hoppingId         = 40;\n      p0_nominal        = -90;\n\n      ssb_PositionsInBurst_PR    = 2;\n      ssb_PositionsInBurst_Bitmap = 1;\n\n      ssb_periodicityServingCell = 2;\n\n      dmrs_TypeA_Position = 0;\n      subcarrierSpacing   = 1;\n\n      referenceSubcarrierSpacing         = 1;\n      dl_UL_TransmissionPeriodicity      = 6;\n      nrofDownlinkSlots                  = 7;\n      nrofDownlinkSymbols                = 6;\n      nrofUplinkSlots                    = 2;\n      nrofUplinkSymbols                  = 4;\n\n      ssPBCH_BlockPower = -25;\n    });\n\n    SCTP :\n    {\n      SCTP_INSTREAMS  = 2;\n      SCTP_OUTSTREAMS = 2;\n    };\n  }\n);\n\nMACRLCs = (\n  {\n    num_cc          = 1;\n    tr_s_preference = \"local_L1\";\n    tr_n_preference = \"f1\";\n\n    // F1 (DU side) – headless services\n    local_n_if_name  = \"eth0\";\n    local_n_address  = \"oai-ran\";  // DU πλευρά\n    remote_n_address = \"oai-ran\";   // CU πλευρά\n    local_n_portc    = 500;\n    local_n_portd    = 2153;\n    remote_n_portc   = 501;\n    remote_n_portd   = 2153;\n\n    pusch_TargetSNRx10 = 200;\n    pucch_TargetSNRx10 = 200;\n  }\n);\n\nL1s = (\n{\n  num_cc = 1;\n  tr_n_preference = \"local_mac\";\n  prach_dtx_threshold   = 200;\n  pucch0_dtx_threshold  = 150;\n  ofdm_offset_divisor   = 8;\n}\n);\n\nRUs = (\n  {\n    local_rf       = \"yes\";\n    nb_tx          = 1;\n    nb_rx          = 1;\n    att_tx         = 0;\n    att_rx         = 0;\n    bands          = [78];\n    max_pdschReferenceSignalPower = -27;\n    max_rxgain                    = 114;\n    eNB_instances                 = [0];\n    bf_weights = [0x00007fff, 0x0000, 0x0000, 0x0000];\n    clock_src = \"internal\";\n  }\n);\n\nTHREAD_STRUCT = (\n  {\n    parallel_config = \"PARALLEL_SINGLE_THREAD\";\n    worker_config   = \"WORKER_ENABLE\";\n  }\n);\n\nrfsimulator:\n{\n  serveraddr = \"server\";\n  serverport = 4043;\n  options    = ();\n  modelname  = \"AWGN\";\n  IQfile     = \"/tmp/rfsimulator.iqs\";\n}\n\nlog_config:\n{\n  global_log_level = \"info\";\n  hw_log_level     = \"info\";\n  phy_log_level    = \"info\";\n  mac_log_level    = \"info\";\n  rlc_log_level    = \"info\";\n  f1ap_log_level   = \"info\";\n};\n"},"kind":"ConfigMap","metadata":{"annotations":{"meta.helm.sh/release-name":"oai-du-split","meta.helm.sh/release-namespace":"oai5g-split"},"creationTimestamp":"2025-11-20T12:44:40Z","labels":{"app.kubernetes.io/managed-by":"Helm"},"name":"oai-du-configmap","namespace":"oai5g-split","resourceVersion":"53321","uid":"50cfb80a-a551-4ddd-b29d-883ea5bf5b80"}}
+    meta.helm.sh/release-name: oai-du-split
+    meta.helm.sh/release-namespace: oai5g-split
+  creationTimestamp: "2025-11-20T12:44:40Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: oai-du-configmap
+  namespace: oai5g-split
+  resourceVersion: "53570"
+  uid: 50cfb80a-a551-4ddd-b29d-883ea5bf5b80

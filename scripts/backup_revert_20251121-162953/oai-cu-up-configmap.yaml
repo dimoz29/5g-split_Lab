@@ -1,0 +1,79 @@
+apiVersion: v1
+data:
+  cuup.conf: |
+    Active_gNBs = ( "oai-cuup");
+    # Asn1_verbosity, choice in: none, info, annoying
+    Asn1_verbosity = "none";
+    sa = 1;
+
+    gNBs =
+    (
+     {
+        ////////// Identification parameters:
+        gNB_ID = 0xe00;
+        gNB_CU_UP_ID = 0xe00;
+
+    #     cell_type =  "CELL_MACRO_GNB";
+
+        gNB_name  =  "oai-cuup";
+
+        // Tracking area code, 0x0000 and 0xfffe are reserved values
+        tracking_area_code  = 1;
+        plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });
+
+        tr_s_preference = "f1";
+
+        local_s_if_name = "eth0";
+        local_s_address = "@F1_IP_ADDRESS@";
+        remote_s_address = "127.0.0.1";
+        local_s_portc   = 501;
+        local_s_portd   = 2153;
+        remote_s_portc  = 500;
+        remote_s_portd  = 2153;
+
+        # ------- SCTP definitions
+        SCTP :
+        {
+            # Number of streams to use in input/output
+            SCTP_INSTREAMS  = 2;
+            SCTP_OUTSTREAMS = 2;
+        };
+
+        E1_INTERFACE =
+        (
+          {
+            type = "up";
+            ipv4_cucp = "@CU_CP_IP_ADDRESS@";
+            ipv4_cuup = "@CU_UP_IP_ADDRESS@";
+          }
+        )
+
+        NETWORK_INTERFACES :
+        {
+          GNB_IPV4_ADDRESS_FOR_NG_AMF              = "@N3_IP_ADDRESS@";
+          GNB_IPV4_ADDRESS_FOR_NGU                 = "@N3_IP_ADDRESS@";
+          GNB_PORT_FOR_S1U                         = 2152; # Spec 2152
+        };
+      }
+    );
+
+    log_config : {
+      global_log_level = "info";
+      pdcp_log_level   = "info";
+      f1ap_log_level   = "info";
+      ngap_log_level   = "info";
+    };
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"cuup.conf":"Active_gNBs = ( \"oai-cuup\");\n# Asn1_verbosity, choice in: none, info, annoying\nAsn1_verbosity = \"none\";\nsa = 1;\n\ngNBs =\n(\n {\n    ////////// Identification parameters:\n    gNB_ID = 0xe00;\n    gNB_CU_UP_ID = 0xe00;\n\n#     cell_type =  \"CELL_MACRO_GNB\";\n\n    gNB_name  =  \"oai-cuup\";\n\n    // Tracking area code, 0x0000 and 0xfffe are reserved values\n    tracking_area_code  = 1;\n    plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1 }) });\n\n    tr_s_preference = \"f1\";\n\n    local_s_if_name = \"eth0\";\n    local_s_address = \"@F1_IP_ADDRESS@\";\n    remote_s_address = \"127.0.0.1\";\n    local_s_portc   = 501;\n    local_s_portd   = 2153;\n    remote_s_portc  = 500;\n    remote_s_portd  = 2153;\n\n    # ------- SCTP definitions\n    SCTP :\n    {\n        # Number of streams to use in input/output\n        SCTP_INSTREAMS  = 2;\n        SCTP_OUTSTREAMS = 2;\n    };\n\n    E1_INTERFACE =\n    (\n      {\n        type = \"up\";\n        ipv4_cucp = \"@CU_CP_IP_ADDRESS@\";\n        ipv4_cuup = \"@CU_UP_IP_ADDRESS@\";\n      }\n    )\n\n    NETWORK_INTERFACES :\n    {\n      GNB_IPV4_ADDRESS_FOR_NG_AMF              = \"@N3_IP_ADDRESS@\";\n      GNB_IPV4_ADDRESS_FOR_NGU                 = \"@N3_IP_ADDRESS@\";\n      GNB_PORT_FOR_S1U                         = 2152; # Spec 2152\n    };\n  }\n);\n\nlog_config : {\n  global_log_level = \"info\";\n  pdcp_log_level   = \"info\";\n  f1ap_log_level   = \"info\";\n  ngap_log_level   = \"info\";\n};\n"},"kind":"ConfigMap","metadata":{"annotations":{"meta.helm.sh/release-name":"oai-cu-up-split","meta.helm.sh/release-namespace":"oai5g-split"},"creationTimestamp":"2025-11-20T12:44:40Z","labels":{"app.kubernetes.io/managed-by":"Helm"},"name":"oai-cu-up-configmap","namespace":"oai5g-split","resourceVersion":"28690","uid":"ec98b3b4-7e4c-4edd-83b0-3d090128f5d3"}}
+    meta.helm.sh/release-name: oai-cu-up-split
+    meta.helm.sh/release-namespace: oai5g-split
+  creationTimestamp: "2025-11-20T12:44:40Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: oai-cu-up-configmap
+  namespace: oai5g-split
+  resourceVersion: "58843"
+  uid: ec98b3b4-7e4c-4edd-83b0-3d090128f5d3
